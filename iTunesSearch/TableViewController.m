@@ -55,13 +55,18 @@
     Filme *filme = [midias objectAtIndex:indexPath.row];
     
     [celula.nome setText:filme.nome];
+    [celula.trackId setText:[NSString stringWithFormat:@"%@",filme.trackId]];
+    [celula.artista setText:filme.artista];
+    [celula.duracao setText:[NSString stringWithFormat:@"%@",filme.duracao]];
+    [celula.genero setText:filme.genero];
+    [celula.pais setText:filme.pais];
     [celula.tipo setText:@"Filme"];
     
     return celula;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
+    return 210;
 }
 
 
