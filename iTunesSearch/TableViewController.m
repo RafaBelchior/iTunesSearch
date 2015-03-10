@@ -30,8 +30,25 @@
     iTunesManager *itunes = [iTunesManager sharedInstance];
     midias = [itunes buscarMidias:@"Apple"];
     
-#warning Necessario para que a table view tenha um espaco em relacao ao topo, pois caso contrario o texto ficara atras da barra superior
-    self.tableview.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableview.bounds.size.width, 15.f)];
+//#warning Necessario para que a table view tenha um espaco em relacao ao topo, pois caso contrario o texto ficara atras da barra superior
+    self.tableview.tableHeaderView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableview.bounds.size.width, self.textfield.bounds.size.height+90.f)];
+    
+    //textfield
+    self.textfield = [[UITextField alloc] initWithFrame:CGRectMake(15.f, 51.f, 230.f, 30.f)];
+    [self.textfield setBorderStyle:UITextBorderStyleRoundedRect];
+    [self.tableview.tableHeaderView addSubview:self.textfield];
+    
+    //button Search
+    self.buttonSearch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.buttonSearch.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.buttonSearch.titleLabel.font = [UIFont fontWithName:@"FranklinGothicStd-ExtraCond" size:20.0];
+    [self.buttonSearch setTitle:@"Search" forState:UIControlStateNormal];
+    [self.buttonSearch setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.buttonSearch.frame = CGRectMake(self.textfield.bounds.size.width+20.f, 51.f, 65.f, 30.f);
+    self.buttonSearch.layer.borderWidth = 2.0f;
+    self.buttonSearch.layer.borderColor = [UIColor grayColor].CGColor;
+    self.buttonSearch.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.buttonSearch];
 }
 
 - (void)didReceiveMemoryWarning {
