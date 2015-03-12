@@ -14,6 +14,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableview;
 @property (strong, nonatomic) UITextField *textfield;
 @property (strong, nonatomic) UIButton *buttonSearch;
-
+-(IBAction)buttonTouchUpInside:(id)sender;
 @end
 

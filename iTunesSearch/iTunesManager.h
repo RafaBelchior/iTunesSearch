@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface iTunesManager : NSObject
-
+@property NSMutableArray *sections;
+@property NSArray *sectionsOrden;
+@property NSMutableArray *podcasts;
+@property NSMutableArray *movies;
+@property NSMutableArray *songs;
+@property NSMutableArray *tvepisodes;
+@property NSMutableArray *musicvideos;
 /**
  * gets singleton object.
  * @return singleton

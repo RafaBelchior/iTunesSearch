@@ -14,6 +14,7 @@
 static iTunesManager *SINGLETON = nil;
 
 static bool isFirstAccess = YES;
+@synthesize sections, sectionsOrden, tvepisodes, songs, movies, podcasts, musicvideos;
 
 #pragma mark - Public Method
 
@@ -34,7 +35,7 @@ static bool isFirstAccess = YES;
         termo = @"";
     }
     
-    NSString *url = [NSString stringWithFormat:@"https://itunes.apple.com/search?term=%@&media=movie", termo];
+    NSString *url = [NSString stringWithFormat:@"https://itunes.apple.com/search?term=%@&", termo];
     NSData *jsonData = [NSData dataWithContentsOfURL: [NSURL URLWithString:url]];
     
     NSError *error;
@@ -42,12 +43,19 @@ static bool isFirstAccess = YES;
                                                               options:NSJSONReadingMutableContainers
                                                                 error:&error];
     if (error) {
-        NSLog(@"Não foi possível fazer a busca. ERRO: %@", error);
+        //NSLog(@"Não foi possível fazer a busca. ERRO: %@", error);
         return nil;
     }
     
     NSArray *resultados = [resultado objectForKey:@"results"];
     NSMutableArray *filmes = [[NSMutableArray alloc] init];
+    sections = [[NSMutableArray alloc] init];
+    songs = [[NSMutableArray alloc] init];
+    movies = [[NSMutableArray alloc] init];
+    podcasts = [[NSMutableArray alloc] init];
+    tvepisodes = [[NSMutableArray alloc] init];
+    musicvideos = [[NSMutableArray alloc] init];
+    
     
     for (NSDictionary *item in resultados) {
         Filme *filme = [[Filme alloc] init];
@@ -57,8 +65,36 @@ static bool isFirstAccess = YES;
         [filme setDuracao:[item objectForKey:@"trackTimeMillis"]];
         [filme setGenero:[item objectForKey:@"primaryGenreName"]];
         [filme setPais:[item objectForKey:@"country"]];
+        [filme setTipo:[item objectForKey:@"kind"]];
+        
+        if ([SINGLETON.sections containsObject:filme.tipo] ) {
+            
+        }else{
+            [SINGLETON.sections addObject:filme.tipo];
+        }
+        
+        if ([filme.tipo  isEqualToString: @"feature-movie"]) {
+            [SINGLETON.movies addObject:filme];
+        }else{
+            if ([filme.tipo isEqualToString:@"song"]) {
+                [SINGLETON.songs addObject:filme];
+            }else{
+                if ([filme.tipo isEqualToString:@"podcast"]) {
+                    [SINGLETON.podcasts addObject:filme];
+                }else{
+                    if ([filme.tipo isEqualToString:@"tv-episode"]) {
+                        [SINGLETON.tvepisodes addObject:filme];
+                    }else{
+                        [SINGLETON.musicvideos addObject:filme];
+                    }
+                }
+            }
+        }
         [filmes addObject:filme];
     }
+    
+    sectionsOrden = [sections sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
     
     return filmes;
 }
