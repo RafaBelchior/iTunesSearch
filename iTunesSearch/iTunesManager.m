@@ -66,6 +66,7 @@ static bool isFirstAccess = YES;
         [filme setGenero:[item objectForKey:@"primaryGenreName"]];
         [filme setPais:[item objectForKey:@"country"]];
         [filme setTipo:[item objectForKey:@"kind"]];
+        [filme setImagem:[item objectForKey:@"artworkUrl100"]];
         
         if ([SINGLETON.sections containsObject:filme.tipo] ) {
             

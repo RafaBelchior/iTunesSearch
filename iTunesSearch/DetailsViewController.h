@@ -1,23 +1,22 @@
 //
-//  TableViewCell.h
+//  DetailsViewController.h
 //  iTunesSearch
 //
-//  Created by joaquim on 09/03/15.
+//  Created by Rafael Souza Belchior da Silva on 12/03/15.
 //  Copyright (c) 2015 joaquim. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-
-@interface TableViewCell : UITableViewCell
-
+#import "Filme.h"
+@interface DetailsViewController : UIViewController
+@property (strong,nonatomic) Filme *filme;
+@property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *nome;
-@property (weak, nonatomic) IBOutlet UILabel *tipo;
 @property (weak, nonatomic) IBOutlet UILabel *trackId;
-@property (weak, nonatomic) IBOutlet UILabel *artista;
+@property (weak, nonatomic) IBOutlet UILabel *artist;
 @property (weak, nonatomic) IBOutlet UILabel *duracao;
 @property (weak, nonatomic) IBOutlet UILabel *genero;
 @property (weak, nonatomic) IBOutlet UILabel *pais;
-@property (weak, nonatomic) IBOutlet UIImageView *imagem;
-
+@property (weak, nonatomic) IBOutlet UILabel *tipo;
 
 @end

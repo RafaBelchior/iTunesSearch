@@ -11,6 +11,7 @@
 #import "iTunesManager.h"
 #import "Entidades/Filme.h"
 #import "Filme.h"
+#import "DetailsViewController.h"
 
 @interface TableViewController () {
     NSArray *midias;
@@ -120,12 +121,15 @@
     }
     
     [celula.nome setText:filme.nome];
-    [celula.trackId setText:[NSString stringWithFormat:@"%@",filme.trackId]];
+    [celula.trackId setText:[NSString stringWithFormat:@"#%@",filme.trackId]];
     [celula.artista setText:filme.artista];
-    [celula.duracao setText:[NSString stringWithFormat:@"%@",filme.duracao]];
+    [celula.duracao setText:[NSString stringWithFormat:@"%dmin",[filme.duracao intValue]/60000]];
     [celula.genero setText:filme.genero];
     [celula.pais setText:filme.pais];
     [celula.tipo setText:filme.tipo];
+    NSURL* aURL = [NSURL URLWithString:filme.imagem];
+    NSData* data = [[NSData alloc] initWithContentsOfURL:aURL];
+    [celula.imagem setImage:[UIImage imageWithData:data]];
     
     return celula;
 }
@@ -135,12 +139,32 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.textfield resignFirstResponder];
+    DetailsViewController *dvc = [[DetailsViewController alloc] init];
+    switch (indexPath.section) {
+        case 0:
+            dvc.filme = [itunes.movies objectAtIndex:indexPath.row];
+            break;
+        case 1:
+            dvc.filme = [itunes.podcasts objectAtIndex:indexPath.row];
+            break;
+        case 2:
+            dvc.filme = [itunes.songs objectAtIndex:indexPath.row];
+            break;
+        case 3:
+            dvc.filme = [itunes.tvepisodes objectAtIndex:indexPath.row];
+            break;
+        default:
+            dvc.filme = [itunes.movies objectAtIndex:indexPath.row];
+            break;
+    }
+    [self.navigationController pushViewController:dvc animated:YES];
+    
 }
 
 -(IBAction) buttonTouchUpInside:(id)sender{
     self.buttonSearch = sender;
     midias = [itunes buscarMidias:self.textfield.text];
+    [self.textfield resignFirstResponder];
     [self.tableview reloadData];
 }
 
