@@ -21,7 +21,7 @@
     [self.nome setText:filme.nome];
     [self.trackId setText:[NSString stringWithFormat:@"#%@",filme.trackId]];
     [self.artist setText:filme.artista];
-    [self.duracao setText:[NSString stringWithFormat:@"%dmin",[filme.duracao intValue]/60000]];
+    [self.duracao setText:[NSString stringWithFormat:@"%.02fmin",[filme.duracao floatValue]/60000]];
     [self.genero setText:filme.genero];
     [self.pais setText:filme.pais];
     [self.tipo setText:filme.tipo];

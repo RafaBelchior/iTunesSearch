@@ -16,6 +16,7 @@
 @property NSMutableArray *songs;
 @property NSMutableArray *tvepisodes;
 @property NSMutableArray *musicvideos;
+@property NSMutableArray *outros;
 /**
  * gets singleton object.
  * @return singleton

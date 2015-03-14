@@ -14,7 +14,7 @@
 static iTunesManager *SINGLETON = nil;
 
 static bool isFirstAccess = YES;
-@synthesize sections, sectionsOrden, tvepisodes, songs, movies, podcasts, musicvideos;
+@synthesize sections, sectionsOrden, tvepisodes, songs, movies, podcasts, musicvideos, outros;
 
 #pragma mark - Public Method
 
@@ -55,7 +55,7 @@ static bool isFirstAccess = YES;
     podcasts = [[NSMutableArray alloc] init];
     tvepisodes = [[NSMutableArray alloc] init];
     musicvideos = [[NSMutableArray alloc] init];
-    
+    outros = [[NSMutableArray alloc] init];
     
     for (NSDictionary *item in resultados) {
         Filme *filme = [[Filme alloc] init];
@@ -77,25 +77,28 @@ static bool isFirstAccess = YES;
         if ([filme.tipo  isEqualToString: @"feature-movie"]) {
             [SINGLETON.movies addObject:filme];
         }else{
-            if ([filme.tipo isEqualToString:@"song"]) {
-                [SINGLETON.songs addObject:filme];
+            if ([filme.tipo isEqualToString:@"music-video"]) {
+                [SINGLETON.musicvideos addObject:filme];
             }else{
                 if ([filme.tipo isEqualToString:@"podcast"]) {
                     [SINGLETON.podcasts addObject:filme];
                 }else{
-                    if ([filme.tipo isEqualToString:@"tv-episode"]) {
-                        [SINGLETON.tvepisodes addObject:filme];
+                    if ([filme.tipo isEqualToString:@"song"]) {
+                        [SINGLETON.songs addObject:filme];
                     }else{
-                        [SINGLETON.musicvideos addObject:filme];
+                        if ([filme.tipo isEqualToString:@"tv-episode"]){
+                            [SINGLETON.tvepisodes addObject:filme];
+                        }else{
+                            [SINGLETON.outros addObject:filme];
+                        }
                     }
                 }
             }
         }
         [filmes addObject:filme];
     }
-    
+
     sectionsOrden = [sections sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
     
     return filmes;
 }
