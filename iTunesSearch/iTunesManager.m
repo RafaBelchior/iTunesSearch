@@ -37,7 +37,6 @@ static bool isFirstAccess = YES;
     
     NSString *url = [NSString stringWithFormat:@"https://itunes.apple.com/search?term=%@&", termo];
     NSData *jsonData = [NSData dataWithContentsOfURL: [NSURL URLWithString:url]];
-    
     NSError *error;
     NSDictionary *resultado = [NSJSONSerialization JSONObjectWithData:jsonData
                                                               options:NSJSONReadingMutableContainers

@@ -29,7 +29,6 @@
     
     UINib *nib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableview registerNib:nib forCellReuseIdentifier:@"celulaPadrao"];
-    
     itunes = [iTunesManager sharedInstance];
     midias = [[NSArray alloc] init];
     
@@ -51,12 +50,16 @@
     self.buttonSearch.layer.borderWidth = 2.0f;
     self.buttonSearch.layer.borderColor = [UIColor grayColor].CGColor;
     self.buttonSearch.backgroundColor = [UIColor clearColor];
+    self.buttonSearch.hidden = true;
     [self.buttonSearch addTarget:self action:@selector(buttonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.buttonSearch];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.textfield.text = [defaults objectForKey:@"infoString"];
     midias = [itunes buscarMidias:self.textfield.text];
+    self.textfield.returnKeyType = UIReturnKeyDone;
+    [self.textfield setDelegate:self];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -236,11 +239,11 @@
         }
     }
     [self.navigationController pushViewController:dvc animated:YES];
-    
 }
 
 -(IBAction) buttonTouchUpInside:(id)sender{
     self.buttonSearch = sender;
+    self.buttonSearch.hidden = true;
     midias = [itunes buscarMidias:self.textfield.text];
     [self.textfield resignFirstResponder];
     [self.tableview reloadData];
@@ -248,7 +251,6 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:self.textfield.text forKey:@"infoString"];
-    NSLog(@"%@", [defaults objectForKey:@"infoString"]);
     [defaults synchronize];
 }
 
@@ -257,4 +259,24 @@
     NSString *sectionName = NSLocalizedString((@"%@",[itunes.sectionsOrden objectAtIndex:section]), nil);
     return sectionName;
 }
+
+-(void) textFieldDidBeginEditing:(UITextField *)textField{
+    self.buttonSearch.hidden = YES;
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    [self validateTextField:self.textfield.text];
+    return YES;
+}
+
+-(void) validateTextField:(NSString *)termo{
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[A-Z0-9a-z]{1,100}$" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSTextCheckingResult *match = [regex firstMatchInString:termo options:0 range:NSMakeRange(0, [termo length])];
+    if (match) {
+        self.buttonSearch.hidden = false;
+    }
+}
+
 @end
