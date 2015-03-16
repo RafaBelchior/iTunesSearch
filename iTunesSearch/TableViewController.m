@@ -73,6 +73,8 @@
     return [itunes.sectionsOrden count];
 }
 
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Ideia inicial
 //    int contagem;
@@ -254,10 +256,23 @@
     [defaults synchronize];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    NSString *sectionName = NSLocalizedString((@"%@",[itunes.sectionsOrden objectAtIndex:section]), nil);
+//    return sectionName;
+//}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableview.frame.size.width,0)];
+    sectionView.backgroundColor = [UIColor grayColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, tableView.frame.size.width, 18)];
     NSString *sectionName = NSLocalizedString((@"%@",[itunes.sectionsOrden objectAtIndex:section]), nil);
-    return sectionName;
+    label.text = sectionName;
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(300, 3, 16, 16)];
+    imgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png",sectionName]];
+    [sectionView addSubview:imgView];
+    [sectionView addSubview:label];
+    return sectionView;
 }
 
 -(void) textFieldDidBeginEditing:(UITextField *)textField{
